@@ -1,0 +1,20 @@
+<div class="modal">
+  <div class="modal-preview">
+    <div class="modal-preview-inner">
+      <h2 class="book-title">{{ book }}</h2>
+      <p class="book-description">{{ book.description }}</p>
+      <p class="book-author">
+        {{ book.author.all|join:", " }}
+      </p>
+      <p class="book-categories">
+        {{ book.category_set.all|join:", " }}
+      </p>
+      <span class="book-pages">{{ book.pages }}</span>
+    </div>
+  </div>
+</div>
+<div class="buttons">
+  <a href="{% url 'lms:update-book' book.id %}" class="button">Update</a>
+  <a href="{% url 'lms:archive-book' book.id %}" class="button">Archive</a>
+  <a href="{% url 'lms:index' %}" class="button">Back</a>
+</div>

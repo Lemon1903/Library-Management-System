@@ -1,0 +1,39 @@
+<form id="form" class="modal" action="" method="post">
+  {% csrf_token %}
+  <div class="modal-preview">
+    <div class="modal-preview-inner">
+      <input class="book-title" name="book_title" value="{{ book }}" placeholder="Enter book title...">
+      <textarea class="book-description" name="book_description" rows="10"
+        placeholder="Enter book description...">{{ book.description }}</textarea>
+      <div class="options">
+        <div class="book-author">
+          <select name="book_author" multiple>
+            {% for author in authors %}
+            {% if author in book.author.all %}
+            <option value="{{ author }}" selected>{{ author }}</option>
+            {% else %}
+            <option value="{{ author }}">{{ author }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="book-categories">
+          <select name="book_categories" multiple>
+            {% for category in categories %}
+            {% if category in book.category_set.all %}
+            <option value="{{ category }}" selected>{{ category }}</option>
+            {% else %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <input class="book-pages" type="number" name="book_pages" value="{{ book.pages }}" placeholder="Enter pages...">
+    </div>
+  </div>
+</form>
+<div class="buttons">
+  <input type="submit" class="button" form="form" value="Save">
+  <a href="{{ request.META.HTTP_REFERER }}" class="button">Cancel</a>
+</div>

@@ -1,0 +1,42 @@
+<form id="edit-form" class="modal" action="" method="post">
+  {% csrf_token %}
+  <div class="modal-preview">
+    <div class="modal-preview-inner">
+      <div class="form-group">
+        <label for="option">{{ label }}</label>
+        <input required id="option" name="option" list="option-list" placeholder="Enter {{ label|lower }}...">
+        <datalist id="option-list">
+          <select id="option">
+            {% if authors %}
+            {% for author in authors %}
+            <option value="{{ author }}">{{ author }}</option>
+            {% endfor %}
+            {% else %}
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+            {% endif %}
+          </select>
+        </datalist>
+      </div>
+
+      <div class="form-group">
+        <label for="books">Books</label>
+        <select name="books" multiple>
+          {% for book in books %}
+          {% if not book.is_archived %}
+          <option id="book-option" value="{{ book }}" data-author="{{ book.author.all }}"
+            data-category="{{ book.category_set.all }}">
+            {{ book }}
+          </option>
+          {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="buttons">
+  <input type="submit" class="button" form="edit-form" value="Save">
+  <a href="{% url 'lms:index' %}" class="button">Cancel</a>
+</div>

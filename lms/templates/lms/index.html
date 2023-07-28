@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="{% static 'images/lms.png' %}" type="image/png" />
+  <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+  <title>Library Management System</title>
+</head>
+
+<body class="{% if not is_home %}no-scroll{% endif %}">
+  <main>
+    <!-- Heading -->
+    <h1 class="heading">Library Management System</h1>
+
+    <!-- Searchbar -->
+    <form class="searchbar" action="{% url 'lms:index' %}" method="get">
+      <input type="text" name="q" value="{{ query }}" placeholder="Search for books, authors, and categories..." />
+    </form>
+
+    <!-- Categories w/ Books -->
+    {% for category in categories %}
+    <div class="category" data-type="{{ category.type|upper }}">
+      <div class="books-wrapper">
+        {% for book in category.books.all %}
+        {% if not book.is_archived %}
+        <a href="{% url 'lms:view-book' book.id %}" class="book">
+          <p>{{ book|truncatechars:16 }}</p>
+        </a>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- Popups -->
+    {% if is_viewing %}
+    {% include "lms/view_book.html" %}
+    {% elif is_editing %}
+    {% include "lms/edit_form.html" %}
+    {% elif is_updating %}
+    {% include "lms/update_form.html" %}
+    {% elif is_adding %}
+    {% include "lms/update_form.html" %}
+    {% else %}
+    <!-- Buttons -->
+    <div class="buttons">
+      <a href="{% url 'lms:add-book' %}" class="button">Add Book</a>
+      <a href="{% url 'lms:edit-category' %}" class="button">Edit Category</a>
+      <a href="{% url 'lms:edit-author' %}" class="button">Edit Author</a>
+    </div>
+    {% endif %}
+  </main>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>
