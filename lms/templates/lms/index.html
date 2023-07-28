@@ -28,7 +28,7 @@
         {% for book in category.books.all %}
         {% if not book.is_archived %}
         <a href="{% url 'lms:view-book' book.id %}" class="book">
-          <p>{{ book|truncatechars:16 }}</p>
+          <p>{{ book|truncatechars:14 }}</p>
         </a>
         {% endif %}
         {% endfor %}
